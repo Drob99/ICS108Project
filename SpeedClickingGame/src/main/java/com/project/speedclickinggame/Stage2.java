@@ -4,8 +4,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -21,20 +24,55 @@ public class Stage2 extends Application {
         FallingEmoji fallingEmoji= new FallingEmoji();
         fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
 
-        //Setting the text displaying the scores and characterizing it
-        Text text = new Text("Score: " + fallingEmoji.getScore());
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(Font.font("Kristen ITC", 30));
-        text.setFill(Paint.valueOf("Yellow"));
-        
-        //Creating the hBox containing the text and adding the text to it
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(5, 5, 5, 5));
-        hBox.getChildren().add(text);
 
-        //adding the hBox to the fallingEmoji pane and setting its alignment
-        fallingEmoji.getChildren().add(hBox);
-        hBox.setAlignment(Pos.TOP_LEFT);
+        //Creating the text showing the score
+        Text text = new Text("Score: " + fallingEmoji.getScore());
+        format(text);
+
+        //Creating an hBox to hold the score of the happy emoji
+        Text scoreH = new Text(" : 3");
+        format(scoreH);
+        ImageView happy = new ImageView(new Image("Happy2.png"));
+        happy.setFitWidth(40);
+        happy.setFitHeight(40);
+        HBox habbyHBox = new HBox();
+        habbyHBox.setPadding(new Insets(5, 5, 5, 5));
+        habbyHBox.getChildren().add(happy);
+        habbyHBox.getChildren().add(scoreH);
+
+        //Creating an hBox to hold the score of the mid emoji
+        Text scoreM = new Text(" : 1");
+        format(scoreM);
+        ImageView mid = new ImageView(new Image("Mid.jpg"));
+        mid.setFitWidth(40);
+        mid.setFitHeight(40);
+        HBox midHBox = new HBox();
+        midHBox.setPadding(new Insets(5, 5, 5, 5));
+        midHBox.getChildren().add(mid);
+        midHBox.getChildren().add(scoreM);
+
+        //Creating an hBox to hold the score of the sad emoji
+        Text scoreS = new Text(" : -1");
+        format(scoreS);
+        ImageView sad = new ImageView(new Image("Sad2.png"));
+        sad.setFitWidth(40);
+        sad.setFitHeight(40);
+        HBox sadHBox = new HBox();
+        sadHBox.setPadding(new Insets(5, 5, 5, 5));
+        sadHBox.getChildren().add(sad);
+        sadHBox.getChildren().add(scoreS);
+
+        //Adding the score and the values to the vBox
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(5, 5, 5, 5));
+        vBox.getChildren().add(text);
+        vBox.getChildren().add(habbyHBox);
+        vBox.getChildren().add(midHBox);
+        vBox.getChildren().add(sadHBox);
+
+        //Displaying the vBox and setting its alignment
+        fallingEmoji.getChildren().add(vBox);
+        vBox.setAlignment(Pos.TOP_LEFT);
 
         //dealing with what happens after the image is clicked on using the customized methods in the fallingEmoji class
         fallingEmoji.getImage().setOnMousePressed(e -> {
@@ -62,5 +100,10 @@ public class Stage2 extends Application {
         stage.setTitle("Falling Emojis");
         stage.setScene(scene);
         stage.show();
+    }
+    public static void format(Text text) {
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setFont(Font.font("Kristen ITC", 30));
+        text.setFill(Paint.valueOf("Yellow"));
     }
 }
