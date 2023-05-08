@@ -30,11 +30,11 @@ public class FallingEmoji extends Pane {
     private ImageView imageView;
     private Timeline animation;
     public Image[] arr = {new Image("Happy2.png"),
-            new Image("Sad2.png")};
+            new Image("Sad2.png"), new Image("Mid-removebg-preview.png")};
     //constructor initializing variables and animation
     public FallingEmoji(){
         //choosing a random image and setting the initial properties of the imageView and adding it to the pane
-        this.image = arr[(int)(Math.random() * 2)];
+        this.image = arr[(int)(Math.random() * arr.length)];
         this.imageView = new ImageView(this.image);
         imageView.setStyle("-fx-background-color: transparent");
         imageView.setFitWidth(100);

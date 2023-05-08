@@ -43,7 +43,7 @@ public class Stage2 extends Application {
         //Creating an hBox to hold the score of the mid emoji
         Text scoreM = new Text(" : 1");
         format(scoreM);
-        ImageView mid = new ImageView(new Image("Mid.jpg"));
+        ImageView mid = new ImageView(new Image("Mid-removebg-preview.png"));
         mid.setFitWidth(40);
         mid.setFitHeight(40);
         HBox midHBox = new HBox();
