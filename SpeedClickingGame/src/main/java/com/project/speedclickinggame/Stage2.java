@@ -20,19 +20,20 @@ public class Stage2 extends Application {
     @Override
     public void start(Stage stage){
 
-        //instantiating a falling image and setting the background's color
-        FallingEmoji fallingEmoji= new FallingEmoji();
-        fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
 
 
         //Creating the text showing the score
-        Text text = new Text("Score: " + fallingEmoji.getScore());
+        Text text = new Text("Score: " + 0);
         format(text);
+
+        //instantiating a falling image and setting the background's color
+        FallingEmoji fallingEmoji= new FallingEmoji(text);
+        fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
 
         //Creating an hBox to hold the score of the happy emoji
         Text scoreH = new Text(" : 3");
         format(scoreH);
-        ImageView happy = new ImageView(new Image("Happy2.png"));
+        ImageView happy = new ImageView(new Image("Happy.png"));
         happy.setFitWidth(40);
         happy.setFitHeight(40);
         HBox habbyHBox = new HBox();
@@ -43,7 +44,7 @@ public class Stage2 extends Application {
         //Creating an hBox to hold the score of the mid emoji
         Text scoreM = new Text(" : 1");
         format(scoreM);
-        ImageView mid = new ImageView(new Image("Mid.jpg"));
+        ImageView mid = new ImageView(new Image("Mid.png"));
         mid.setFitWidth(40);
         mid.setFitHeight(40);
         HBox midHBox = new HBox();
@@ -54,7 +55,7 @@ public class Stage2 extends Application {
         //Creating an hBox to hold the score of the sad emoji
         Text scoreS = new Text(" : -1");
         format(scoreS);
-        ImageView sad = new ImageView(new Image("Sad2.png"));
+        ImageView sad = new ImageView(new Image("Sad.png"));
         sad.setFitWidth(40);
         sad.setFitHeight(40);
         HBox sadHBox = new HBox();
@@ -78,7 +79,7 @@ public class Stage2 extends Application {
         fallingEmoji.getImage().setOnMousePressed(e -> {
             fallingEmoji.increaseScore();
             text.setText("Score: " + fallingEmoji.getScore());
-            if (fallingEmoji.getScore() == 30) {
+            if (fallingEmoji.getScore() >= 30) {
                 fallingEmoji.hideImage();
                 fallingEmoji.pause();
                 fallingEmoji.getChildren().remove(text);

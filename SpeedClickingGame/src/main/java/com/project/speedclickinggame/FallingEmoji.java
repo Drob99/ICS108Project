@@ -28,37 +28,69 @@ public class FallingEmoji extends Pane {
     private static ArrayList<Integer> scores = new ArrayList<>(); //stores the highest five scores
     private Image image;
     private ImageView imageView;
+    private Emoji[] emojis = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
     private Timeline animation;
-    public Image[] arr = {new Image("Happy2.png"),
-            new Image("Sad2.png")};
+    private Timeline[] animations;
+    public Image[] arr = {new Image("Happy.png"),
+            new Image("Sad.png")};
+    private Text text;
+    private int active;
     //constructor initializing variables and animation
-    public FallingEmoji(){
+    public FallingEmoji(Text text){
         //choosing a random image and setting the initial properties of the imageView and adding it to the pane
         this.image = arr[(int)(Math.random() * 2)];
         this.imageView = new ImageView(this.image);
+        this.text = text;
+        active = 4;
         imageView.setStyle("-fx-background-color: transparent");
         imageView.setFitWidth(100);
         imageView.setFitHeight(100);
         imageView.setY(-100);
         imageView.setX((int)(Math.random() * 701));
         imageView.setCursor(Cursor.HAND);
+        int r = (int) (Math.random() * 3);
+        emojis[3] = emojis[r].cloneR();
         getChildren().add(imageView);
+        getChildren().add(emojis[0]);
+        getChildren().add(emojis[1]);
+        getChildren().add(emojis[2]);
+        getChildren().add(emojis[3]);
 
         //animation instantiating
         animation = new Timeline(
                 new KeyFrame(
                         Duration.millis(50), e -> dropImage()));
         animation.setCycleCount(Timeline.INDEFINITE);
+        animations = new Timeline[4];
+        for(int i = 0; i < 4; i++) {
+            final int j = i;
+            animations[i] = new Timeline(new KeyFrame(Duration.millis(35 + 10 * ((j == 3) ? r : j) + (int) (10 * Math.random())), e -> dropImage(j)));
+            animations[i].setCycleCount(Timeline.INDEFINITE);
+        }
+        for(int i = 0; i < 4; i++) {
+            Emoji emj = emojis[i];
+            Timeline anm = animations[i];
+            emj.setOnMousePressed(e -> {
+                score += emj.getScore();
+                text.setText("Score: " + score);
+                emj.prepareEmoji();
+                anm.setRate(anm.getRate() + 1 + Math.random() / 2);
+            });
+        }
     }
 
     //This method plays the animation
     public void play(){
         animation.play();
+        for(Timeline a: animations)
+            a.play();
     }
 
     //This method helps pause the animation
     public void pause(){
         animation.pause();
+        for(Timeline a: animations)
+            a.pause();
     }
 
     //This method increases the speed of the animation
@@ -74,6 +106,20 @@ public class FallingEmoji extends Pane {
             pause();
             addScore(getScore());
             displayScores();
+        }
+    }
+
+    protected void dropImage(int i) {
+        this.emojis[i].setY(emojis[i].getY() + 1);
+        if (emojis[i].getY() > 700) {
+            if(emojis[i].prepareEmoji()) {
+                animations[i].pause();
+                active--;
+                if(active == 0) {
+                    addScore(score);
+                    displayScores();
+                }
+            }
         }
     }
 
@@ -120,11 +166,9 @@ public class FallingEmoji extends Pane {
             scores.add(score);
             Collections.sort(scores, Collections.reverseOrder());
         }
-        else{
-            if (score > scores.get(4)) {
-                scores.set(4, score);
-                Collections.sort(scores, Collections.reverseOrder());
-            }
+        else if (score > scores.get(4)) {
+            scores.set(4, score);
+            Collections.sort(scores, Collections.reverseOrder());
         }
     }
 
@@ -160,7 +204,7 @@ public class FallingEmoji extends Pane {
 
         //dealing with changing the scenes
         button.setOnAction(e -> {
-            FallingEmoji fallingEmoji = new FallingEmoji();
+            FallingEmoji fallingEmoji = new FallingEmoji(new Text());
             Scene scene = new Scene(fallingEmoji, 800, 700);
             fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
             Stage stage = (Stage) button.getScene().getWindow();
