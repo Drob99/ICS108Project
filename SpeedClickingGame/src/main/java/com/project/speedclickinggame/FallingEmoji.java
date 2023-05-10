@@ -26,88 +26,45 @@ public class FallingEmoji extends Pane {
     //setting the needed fields in the class
     private int score = 0; //current score
     private static ArrayList<Integer> scores = new ArrayList<>(); //stores the highest five scores
-    private Image image;
-    private ImageView imageView;
     private Emoji[] emojis = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
-    private Timeline animation;
     private Timeline[] animations;
-    public Image[] arr = {new Image("Happy.png"),
-            new Image("Sad.png")};
     private Text text;
     private int active;
     //constructor initializing variables and animation
     public FallingEmoji(Text text){
+        Emoji.reset();
         //choosing a random image and setting the initial properties of the imageView and adding it to the pane
-        this.image = arr[(int)(Math.random() * 2)];
-        this.imageView = new ImageView(this.image);
         this.text = text;
         active = 4;
-        imageView.setStyle("-fx-background-color: transparent");
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
-        imageView.setY(-100);
-        imageView.setX((int)(Math.random() * 701));
-        imageView.setCursor(Cursor.HAND);
         int r = (int) (Math.random() * 3);
         emojis[3] = emojis[r].cloneR();
-        getChildren().add(imageView);
-        getChildren().add(emojis[0]);
-        getChildren().add(emojis[1]);
-        getChildren().add(emojis[2]);
-        getChildren().add(emojis[3]);
 
         //animation instantiating
-        animation = new Timeline(
-                new KeyFrame(
-                        Duration.millis(50), e -> dropImage()));
-        animation.setCycleCount(Timeline.INDEFINITE);
         animations = new Timeline[4];
         for(int i = 0; i < 4; i++) {
             final int j = i;
-            animations[i] = new Timeline(new KeyFrame(Duration.millis(35 + 10 * ((j == 3) ? r : j) + (int) (10 * Math.random())), e -> dropImage(j)));
+            animations[i] = new Timeline(new KeyFrame(Duration.millis(20 + 5 * ((j == 3) ? r : j) + (int) (20 * Math.random())), e -> dropImage(j)));
             animations[i].setCycleCount(Timeline.INDEFINITE);
-        }
-        for(int i = 0; i < 4; i++) {
             Emoji emj = emojis[i];
+            emj.prepareEmoji();
+            getChildren().add(emj);
             Timeline anm = animations[i];
             emj.setOnMousePressed(e -> {
                 score += emj.getScore();
                 text.setText("Score: " + score);
                 emj.prepareEmoji();
-                anm.setRate(anm.getRate() + 1 + Math.random() / 2);
+                anm.setRate(anm.getRate() + Math.random() / 2 + 0.5);
             });
         }
     }
 
     //This method plays the animation
     public void play(){
-        animation.play();
         for(Timeline a: animations)
             a.play();
     }
 
-    //This method helps pause the animation
-    public void pause(){
-        animation.pause();
-        for(Timeline a: animations)
-            a.pause();
-    }
-
-    //This method increases the speed of the animation
-    public void increaseSpeed(){
-        animation.setRate(animation.getRate() + 1);
-    }
-
     //This method drops the image through the window and deals with the bottom boundary
-    protected void dropImage() {
-        this.imageView.setY(imageView.getY() + 1);
-        if (this.getY() > 700) {
-            hideImage();
-            pause();
-            addScore(getScore());
-            displayScores();
-        }
-    }
 
     protected void dropImage(int i) {
         this.emojis[i].setY(emojis[i].getY() + 1);
@@ -121,43 +78,6 @@ public class FallingEmoji extends Pane {
                 }
             }
         }
-    }
-
-    //This method hides the image when needed
-    public void hideImage(){
-        imageView.setVisible(false);
-    }
-
-    //This method gets the Y coordinate of the image
-    public double getY(){
-        return imageView.getY();
-    }
-
-    //This method hides the current image, randomly chooses another image, and starts the animation for another image.
-    public void changeImage(){
-        imageView.setVisible(false);
-        imageView.setImage(arr[(int)(Math.random() * 2)]);
-        imageView.setY(-100);
-        imageView.setX((int)(Math.random() * 701));
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
-        imageView.setCursor(Cursor.HAND);
-        imageView.setVisible(true);
-    }
-
-    //This method increases the value of score field
-    public void increaseScore(){
-        this.score++;
-    }
-
-    //This method is a getter for the score
-    public int getScore(){
-        return this.score;
-    }
-
-    //This is a getter for the ImageView
-    public ImageView getImage(){
-        return this.imageView;
     }
 
     //This method adds the current score to the list of highest 5 scores if suitable and sorts the list as needed

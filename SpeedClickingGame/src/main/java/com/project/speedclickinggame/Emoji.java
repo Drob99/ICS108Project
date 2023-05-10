@@ -15,8 +15,6 @@ public class Emoji extends ImageView implements Cloneable{
         this.imgName = imgName;
         this.score = score;
         this.random = random;
-        counter = 0;
-        prepareEmoji();
     }
     public int getScore() {
         return score;
@@ -44,5 +42,8 @@ public class Emoji extends ImageView implements Cloneable{
         setX((int)(Math.random() * 701));
         setCursor(Cursor.HAND);
         return false;
+    }
+    public static void reset() {
+        counter = 0;
     }
 }

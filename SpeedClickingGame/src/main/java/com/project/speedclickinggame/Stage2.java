@@ -75,24 +75,6 @@ public class Stage2 extends Application {
         fallingEmoji.getChildren().add(vBox);
         vBox.setAlignment(Pos.TOP_LEFT);
 
-        //dealing with what happens after the image is clicked on using the customized methods in the fallingEmoji class
-        fallingEmoji.getImage().setOnMousePressed(e -> {
-            fallingEmoji.increaseScore();
-            text.setText("Score: " + fallingEmoji.getScore());
-            if (fallingEmoji.getScore() >= 30) {
-                fallingEmoji.hideImage();
-                fallingEmoji.pause();
-                fallingEmoji.getChildren().remove(text);
-                fallingEmoji.addScore(fallingEmoji.getScore());
-                fallingEmoji.displayScores();
-            }
-            else{
-                fallingEmoji.increaseSpeed();
-                fallingEmoji.changeImage();
-                fallingEmoji.play();
-            }
-        });
-
         //plays the animation
         fallingEmoji.play();
 
