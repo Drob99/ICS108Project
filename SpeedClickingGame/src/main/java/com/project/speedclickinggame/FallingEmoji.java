@@ -28,8 +28,10 @@ public class FallingEmoji extends Pane {
     //setting the needed fields in the class
     private int score = 0; //current score
     private Emoji[] emojis = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
+
     //The objects falling in the animation
     private Timeline[] animations;
+
     //The timelines of the objects(different timelines for different speeds)
     private int active;
     //The number of active emojis at a given time(initially 4, the game ends when it is 0)
@@ -44,7 +46,7 @@ public class FallingEmoji extends Pane {
         active = 4;
 
         //initializing the 4th emoji to be random
-        emojis[3] = emojis[(int) (Math.random() * 3)].cloneR();
+        emojis[3] = emojis[(int) (Math.random() * 3)].clone();
 
         //animation instantiating
         animations = new Timeline[4];

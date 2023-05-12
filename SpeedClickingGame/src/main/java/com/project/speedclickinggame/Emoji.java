@@ -30,7 +30,8 @@ public class Emoji extends ImageView implements Cloneable{
     }
 
     //a method to clone an emoji for the random emoji('random' is always 'true' because this method is only used with the random emoji)
-    public Emoji cloneR() {
+    @Override
+    public Emoji clone() {
         return new Emoji(imgName, score, true);
     }
 
