@@ -76,7 +76,7 @@ public class Project extends Application {
     }
 
     //This changes the scenes into the one in which the playing occurs
-    private void changeStages(Stage stage) {
+    public void changeStages(Stage stage) {
         stage.close();
         Stage2 stage2 = new Stage2();
         Stage stage1 = new Stage();

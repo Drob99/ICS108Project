@@ -17,96 +17,128 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Scanner;
 
 //This class sets the properties of the fallingEmoji pane which extends the Pane class
 public class FallingEmoji extends Pane {
 
     //setting the needed fields in the class
     private int score = 0; //current score
-    private static ArrayList<Integer> scores = new ArrayList<>(); //stores the highest five scores
     private Emoji[] emojis = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
+    //The objects falling in the animation
     private Timeline[] animations;
+    //The timelines of the objects(different timelines for different speeds)
     private Text text;
+    //The text displaying the score
     private int active;
+    //The number of active emojis at a given time(initially 4, the game ends when it is 0)
+
     //constructor initializing variables and animation
-    public FallingEmoji(Text text){
+    public FallingEmoji(Text text){         //The text input is the one holding the score in Stage2
+
+        //Resetting the counter for the number of emojis dropped so far
         Emoji.reset();
-        //choosing a random image and setting the initial properties of the imageView and adding it to the pane
+
+        //initializing 'text' and 'active'
         this.text = text;
         active = 4;
-        int r = (int) (Math.random() * 3);
-        emojis[3] = emojis[r].cloneR();
+
+        //initializing the 4th emoji to be random
+        emojis[3] = emojis[(int) (Math.random() * 3)].cloneR();
 
         //animation instantiating
         animations = new Timeline[4];
         for(int i = 0; i < 4; i++) {
+            //initializing j to be usable in the lambda expression
             final int j = i;
-            animations[i] = new Timeline(new KeyFrame(Duration.millis(20 + 5 * ((j == 3) ? r : j) + (int) (20 * Math.random())), e -> dropImage(j)));
+
+            //initializing the animation to drop the image(the time control depends on the emoji but is partially random as well)
+            animations[i] = new Timeline(new KeyFrame(Duration.millis(20 + 5 * j + (int) (20 * Math.random())), e -> dropImage(j)));
             animations[i].setCycleCount(Timeline.INDEFINITE);
+
+            //Preparing the emojis and adding them to the pane
             Emoji emj = emojis[i];
             emj.prepareEmoji();
             getChildren().add(emj);
+
+            //initializing anm to be usable in the lambda expression
             Timeline anm = animations[i];
+
+            //setting the event when the mouse is pressed
             emj.setOnMousePressed(e -> {
+                //incrementing the score and updating it
                 score += emj.getScore();
                 text.setText("Score: " + score);
+
+                //resetting the emoji and making it faster(slightly random)
                 emj.prepareEmoji();
-                anm.setRate(anm.getRate() + Math.random() / 2 + 0.5);
+                anm.setRate(anm.getRate() + 0.5 + Math.random() / 2);
             });
         }
-    }
-
-    //This method plays the animation
-    public void play(){
+        //playing all the animations
         for(Timeline a: animations)
             a.play();
     }
 
-    //This method drops the image through the window and deals with the bottom boundary
-
-    protected void dropImage(int i) {
+    //This method drops the emoji through the window and deals with the bottom boundary
+    public void dropImage(int i) {
+        //moving the emoji down
         this.emojis[i].setY(emojis[i].getY() + 1);
+
+        //handling the bottom boundary
         if (emojis[i].getY() > 700) {
+            //resetting the emoji if the game is not over, ending it otherwise
             if(emojis[i].prepareEmoji()) {
+                //pausing the animation and decreasing the counter of active emojis
                 animations[i].pause();
                 active--;
-                if(active == 0) {
-                    addScore(score);
-                    displayScores();
-                }
-            }
-        }
-    }
 
-    //This method adds the current score to the list of highest 5 scores if suitable and sorts the list as needed
-    public void addScore(int score){
-        if (scores.size() < 5){
-            scores.add(score);
-            Collections.sort(scores, Collections.reverseOrder());
-        }
-        else if (score > scores.get(4)) {
-            scores.set(4, score);
-            Collections.sort(scores, Collections.reverseOrder());
+                //checking if thew game is over
+                if(active == 0)
+                    displayScores();
+            }
         }
     }
 
     //This method sets the final scene that displays the scores and has a replay button for the game
     public void displayScores(){
+        //initializing the array that will hold the leaderboard
+        Integer[] topScores = new Integer[5];
+        try {
+            //reading the top scores from the leaderboard file
+            File leaderboard = new File("Top.txt");
+            Scanner in = new Scanner(leaderboard);
+            for(int i = 0; i < 5; i++)
+                topScores[i] = in.nextInt();
+
+            //checking if the new score made it to the leaderboard and updating it
+            if(score > topScores[4]) {
+                topScores[4] = score;
+                Arrays.sort(topScores, Collections.reverseOrder());
+                PrintWriter pw = new PrintWriter(leaderboard);
+                for(int i: topScores)
+                    pw.print(i + " ");
+                pw.close();
+            }
+        } catch (FileNotFoundException e) {}
 
         //creating a borderpane, stackPane, and text
         BorderPane borderPane = new BorderPane();
         StackPane stackPane = new StackPane();
         Text text = new Text();
-
-        //Customizing the text
         text.setTextAlignment(TextAlignment.CENTER);
+
+        //setting the text to contain the score along with the leaderboard
         String str = "";
-        for (Integer i : scores){
-            str += i + "\n";
-        }
-        text.setText("Previous Scores\n " + str);
+        for(int i: topScores)
+            str += "\n" + i;
+        text.setText("Your Score: " + score + "\nTop Scores" + str);
         text.setFont(Font.font("Jokerman", 50));
 
         //Creating an hBox to contain the replay button

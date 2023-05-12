@@ -20,13 +20,11 @@ public class Stage2 extends Application {
     @Override
     public void start(Stage stage){
 
-
-
-        //Creating the text showing the score
+        //Creating the text showing the score and formatting it
         Text text = new Text("Score: " + 0);
         format(text);
 
-        //instantiating a falling image and setting the background's color
+        //instantiating the pane that runs the game and setting its color
         FallingEmoji fallingEmoji= new FallingEmoji(text);
         fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
 
@@ -75,15 +73,13 @@ public class Stage2 extends Application {
         fallingEmoji.getChildren().add(vBox);
         vBox.setAlignment(Pos.TOP_LEFT);
 
-        //plays the animation
-        fallingEmoji.play();
-
         //creating the scene containing the fallingEmoji pane and adding it to the stage
         Scene scene = new Scene(fallingEmoji, 800, 700);
         stage.setTitle("Falling Emojis");
         stage.setScene(scene);
         stage.show();
     }
+    //This method is used to format the text in this scene
     public static void format(Text text) {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Kristen ITC", 30));
