@@ -20,8 +20,6 @@ public class Stage2 extends Application {
     @Override
     public void start(Stage stage){
 
-
-
         //Creating the text showing the score
         Text text = new Text("Score: " + 0);
         format(text);
@@ -33,7 +31,7 @@ public class Stage2 extends Application {
         //Creating an hBox to hold the score of the happy emoji
         Text scoreH = new Text(" : 3");
         format(scoreH);
-        ImageView happy = new ImageView(new Image("Happy.png"));
+        ImageView happy = new ImageView(new Image("Happy2.png"));
         happy.setFitWidth(40);
         happy.setFitHeight(40);
         HBox habbyHBox = new HBox();
@@ -55,7 +53,7 @@ public class Stage2 extends Application {
         //Creating an hBox to hold the score of the sad emoji
         Text scoreS = new Text(" : -1");
         format(scoreS);
-        ImageView sad = new ImageView(new Image("Sad.png"));
+        ImageView sad = new ImageView(new Image("Sad2.png"));
         sad.setFitWidth(40);
         sad.setFitHeight(40);
         HBox sadHBox = new HBox();

@@ -9,7 +9,7 @@ public class Emoji extends ImageView implements Cloneable{
     private int score;
     private boolean random;
     private static int counter;
-    private static Emoji[] emjList = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false)};
+    private static Emoji[] emjList = {new Emoji("Happy2.png", 3, false), new  Emoji("Sad2.png", -1, false), new Emoji("Mid.png", 1, false)};
     public Emoji(String imgName, int score, boolean random) {
         super(new Image(imgName));
         this.imgName = imgName;
@@ -20,7 +20,8 @@ public class Emoji extends ImageView implements Cloneable{
         return score;
     }
 
-    public Emoji cloneR() {
+    @Override
+    public Emoji clone() {
         return new Emoji(imgName, score, true);
     }
     public boolean prepareEmoji() {

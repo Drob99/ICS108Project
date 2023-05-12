@@ -26,7 +26,7 @@ public class FallingEmoji extends Pane {
     //setting the needed fields in the class
     private int score = 0; //current score
     private static ArrayList<Integer> scores = new ArrayList<>(); //stores the highest five scores
-    private Emoji[] emojis = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
+    private Emoji[] emojis = {new Emoji("Happy2.png", 3, false), new  Emoji("Sad2.png", -1, false), new Emoji("Mid.png", 1, false), new Emoji("Mid.png", 1, true)};
     private Timeline[] animations;
     private Text text;
     private int active;
@@ -37,7 +37,7 @@ public class FallingEmoji extends Pane {
         this.text = text;
         active = 4;
         int r = (int) (Math.random() * 3);
-        emojis[3] = emojis[r].cloneR();
+        emojis[3] = emojis[r].clone();
 
         //animation instantiating
         animations = new Timeline[4];
