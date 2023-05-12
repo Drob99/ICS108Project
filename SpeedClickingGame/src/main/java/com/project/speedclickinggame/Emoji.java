@@ -10,7 +10,7 @@ public class Emoji extends ImageView implements Cloneable{
     private int score;              //the score for the individual emoji when clicked
     private boolean random;         //determining weather the emoji changes randomly when clicked
     private static int counter;     //a counter for the number of emojis dropped in a round
-    private static Emoji[] emjList = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false)};
+    private static final Emoji[] emjList = {new Emoji("Happy.png", 3, false), new  Emoji("Sad.png", -1, false), new Emoji("Mid.png", 1, false)};
     //a reference to choose the random emoji from
 
     //constructor initializing the instance variables
