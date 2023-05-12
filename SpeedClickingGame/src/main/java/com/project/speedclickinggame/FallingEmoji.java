@@ -7,8 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -20,7 +18,6 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
@@ -34,8 +31,6 @@ public class FallingEmoji extends Pane {
     //The objects falling in the animation
     private Timeline[] animations;
     //The timelines of the objects(different timelines for different speeds)
-    private Text text;
-    //The text displaying the score
     private int active;
     //The number of active emojis at a given time(initially 4, the game ends when it is 0)
 
@@ -45,8 +40,7 @@ public class FallingEmoji extends Pane {
         //Resetting the counter for the number of emojis dropped so far
         Emoji.reset();
 
-        //initializing 'text' and 'active'
-        this.text = text;
+        //initializing 'active'
         active = 4;
 
         //initializing the 4th emoji to be random
@@ -99,7 +93,7 @@ public class FallingEmoji extends Pane {
                 animations[i].pause();
                 active--;
 
-                //checking if thew game is over
+                //checking if the game is over
                 if(active == 0)
                     displayScores();
             }
