@@ -60,7 +60,8 @@ public class FallingEmoji extends Pane {
 
             //Preparing the emojis and adding them to the pane
             Emoji emj = emojis[i];
-            emj.prepareEmoji();
+            if(emj.prepareEmoji())
+                displayScores();
             getChildren().add(emj);
 
             //initializing anm to be usable in the lambda expression
@@ -113,6 +114,7 @@ public class FallingEmoji extends Pane {
             for(int i = 0; i < 5; i++)
                 topScores[i] = in.nextInt();
 
+            in.close();
             //checking if the new score made it to the leaderboard and updating it
             if(score > topScores[4]) {
                 topScores[4] = score;
@@ -122,7 +124,9 @@ public class FallingEmoji extends Pane {
                     pw.print(i + " ");
                 pw.close();
             }
-        } catch (FileNotFoundException e) {}
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         //creating a borderpane, stackPane, and text
         BorderPane borderPane = new BorderPane();

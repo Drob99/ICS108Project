@@ -15,25 +15,38 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.ObjectInputFilter;
+
 //This class works with the 2nd stage that has the falling images in it
 public class Stage2 extends Application {
+    private final int IMG_HEIGHT = 40;
+    private final int IMG_WIDTH = 40;
+    private static final int FONT_SIZE = 30;
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) {
 
         //Creating the text showing the score and formatting it
         Text text = new Text("Score: " + 0);
         format(text);
 
         //instantiating the pane that runs the game and setting its color
-        FallingEmoji fallingEmoji= new FallingEmoji(text);
+        FallingEmoji fallingEmoji = null;
+        try {
+            fallingEmoji = new FallingEmoji(text);
+        }
+
+        catch (ExceptionInInitializerError ex) {
+            System.out.println("Emoji is Not Found");
+            System.exit(1);
+        }
         fallingEmoji.setBackground(Background.fill(Paint.valueOf("Teal")));
 
         //Creating an hBox to hold the score of the happy emoji
         Text scoreH = new Text(" : 3");
         format(scoreH);
         ImageView happy = new ImageView(new Image("Happy.png"));
-        happy.setFitWidth(40);
-        happy.setFitHeight(40);
+        happy.setFitWidth(IMG_WIDTH);
+        happy.setFitHeight(IMG_HEIGHT);
         HBox habbyHBox = new HBox();
         habbyHBox.setPadding(new Insets(5, 5, 5, 5));
         habbyHBox.getChildren().add(happy);
@@ -54,8 +67,8 @@ public class Stage2 extends Application {
         Text scoreS = new Text(" : -1");
         format(scoreS);
         ImageView sad = new ImageView(new Image("Sad.png"));
-        sad.setFitWidth(40);
-        sad.setFitHeight(40);
+        sad.setFitWidth(IMG_WIDTH);
+        sad.setFitHeight(IMG_HEIGHT);
         HBox sadHBox = new HBox();
         sadHBox.setPadding(new Insets(5, 5, 5, 5));
         sadHBox.getChildren().add(sad);
@@ -78,11 +91,13 @@ public class Stage2 extends Application {
         stage.setTitle("Falling Emojis");
         stage.setScene(scene);
         stage.show();
+
+
     }
     //This method is used to format the text in this scene
     public static void format(Text text) {
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(Font.font("Kristen ITC", 30));
+        text.setFont(Font.font("Kristen ITC", FONT_SIZE));
         text.setFill(Paint.valueOf("Yellow"));
     }
 }

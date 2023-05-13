@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 //This class works with the welcome stage which is first opened to the user.
 public class Project extends Application {
+    private static final int FONT_SIZE = 75;
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,8 +39,8 @@ public class Project extends Application {
         hBox.setPadding(new Insets(5, 5, 5, 5));
 
         //creating a text 
-        Text text = new Text("Welcome to the Game.\nClick on Button to Start.");
-        text.setFont(Font.font("Vivaldi", 75));
+        Text text = new Text("Welcome to the Game\nClick on Button to Start");
+        text.setFont(Font.font("Vivaldi", FONT_SIZE));
         text.setFill(Paint.valueOf("Yellow"));
         text.setTextAlignment(TextAlignment.CENTER);
 
